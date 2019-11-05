@@ -5,11 +5,15 @@ import time
 import pygame
 
 
-class Scenario(object):
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-        self.image = pygame.image.load(r'assets\cenario.jfif')
+class Background(object):
+    def __init__(self):
+        self.image = pygame.image.load(r'assets\background.png')
+        self.rect = self.image.get_rect()
+        self.rect.left, self.rect.top = [0, 0]
+
+    def draw(self, window):
+        window.fill([255, 255, 255])
+        window.blit(self.image, self.rect)
 
 
 class Player(object):
@@ -69,21 +73,22 @@ ball_height = 10
 ball_width = 10
 ball_speed = 50
 
-#-------------- inicializando objetos-------------------------------
+# -------------- inicializando objetos-------------------------------
+screen_width, screen_height = 750, 750
 player = Player(player_init_X, player_init_y, player_height, player_width, player_speed)
 ball = Ball(ball_init_X, ball_init_y, ball_height, ball_width, ball_speed)
-
+background = Background();
 pygame.init()
-screen_width, screen_height = 750, 750
 screen = pygame.display.set_mode((screen_width, screen_height))
 
 while 1:
-    while 1:
-        # *********updates the screen*************
-        # clear the screen before drawing again
-        pygame.time.delay(100)
-        screen.fill(1)
-        # update the screen
-        # screen.blit(heroShip.image, (heroShip.x, heroShip.y))
-        player.draw(screen)
-        pygame.display.update()
+    # *********updates the screen*************
+    # clear the screen before drawing again
+    pygame.time.delay(100)
+    screen.fill(1)
+    background.draw(screen)
+    # update the screen
+    # screen.blit(heroShip.image, (heroShip.x, heroShip.y))
+    player.draw(screen)
+    pygame.display.update()
+
