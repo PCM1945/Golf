@@ -7,19 +7,23 @@ import physics as ph
 startx = 0
 starty = 0
 
-power = int(input("enter the power of the launch in joules: "))
-angle = int(input("enter the angle of the launch"))
+v0 = int(input("enter the muzzle speed of the projectile: "))
+angle = int(input("enter the angle of the launch: "))
+
 movement_time = ph.maxtime(angle)
-path_angle = ph.findangle(power, angle)
-launch_power = ph.findpower(power, path_angle, movement_time)
-maxalt = ph.maxalt(launch_power,angle)
-t = np.arange(0, maxalt, 10)
+path_angle = ph.findangle(v0, angle)
+linear_speed = ph.linearspeed(v0, path_angle, movement_time)
+maxalt = ph.maxalt(linear_speed, angle)
+graph = ph.ballpath(startx, starty, linear_speed, path_angle, movement_time)
+
+
+t = np.arange(0.0, maxalt)
 fig, ax = plt.subplots()
-graph = ph.ballpath(startx, starty, launch_power, path_angle, movement_time)
-ax.plot(t, graph)
-print(maxalt)
+ax.plot(t.shape, graph)
+
 ax.set(xlabel='x', ylabel='y',
        title='your launch graph')
+
 ax.grid()
 plt.show()
 

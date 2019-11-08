@@ -1,52 +1,42 @@
 import math
 
 
-def ballpath(startx, starty, power, ang, time):
-    angle = ang
-    velx = math.cos(angle) * power
-    vely = math.sin(angle) * power
+def ballpath(startx, starty, v0, angle, time):  # função que retorna as equações de posição horaria
+    # equações de decomposição da velocidade
+    vel_x = math.cos(angle) * v0
+    vel_y = math.sin(angle) * v0
+# equações de movimento retilineo e obliquo respectivamente
+    dist_x = vel_x * time
+    dist_y = (vel_y * time) + ((-9.8 * (time ** 2)) / 2)
+# essas duas variaveis a baixo retornam as posisões que a bola se mexe no pygame
+    new_x = round(dist_x + startx)
+    new_y = round(starty - dist_y)
+    return dist_y
 
-    distX = velx * time
-    distY = (vely * time) + ((-9.8 * (time ** 2)) / 2)
 
-    newx = round(distX + startx)
-    newy = round(starty - distY)
-
-    return distY
-
-
-def findpower(power, angle, time):
-    velx = math.cos(angle) * power
-    vely = math.sin(angle) * power
-
-    vfy = vely + (-9.8 * time)
-    vf = math.sqrt((vfy**2) + (velx**2))
-
+def linearspeed(v0, angle, time):  # função que retorna a velocidade linear do projetil
+    # equações de decomposição da velocidade
+    vel_x = math.cos(angle) * v0
+    vel_y = math.sin(angle) * v0
+    # equações que retornam  a velocidade linear e y e geral do progetil
+    vfy = vel_y + (-9.8 * time)
+    vf = math.sqrt(pow(vfy, 2) + pow(vel_x, 2))
     return vf
 
 
-def findangle(power, angle):
-    vely = math.sin(angle) * power
-    velx = math.cos(angle) * power
-
-    ang = math.atan(abs(vely) / abs(velx))
-
+def findangle(v0, angle):  # função que retorna o angulo de lançamento do projetil
+    # equações de decomposição da velocidade
+    vel_y = math.sin(angle) * v0
+    vel_x = math.cos(angle) * v0
+    ang = math.atan(abs(vel_y) / abs(vel_x))
     return ang
 
 
-def maxtime(power):
-    time = ((power * -1) - (math.sqrt(power**2))) / -9.8
-
+def maxtime(v0): # função que retona o tempo maximo do lançamento
+    time = ((v0 * -1) - (math.sqrt(pow(v0, 2))) / -9.8)
     return time / 2
 
 
-def linearspeed(velx, vely):
-    linear = math.sqrt(vely + velx)
-    return linear
-
-def maxalt(power, angle):
-    velx = math.cos(angle) * power
-    vely = math.sin(angle) * power
-    speed = vely/velx
-    h = (pow(speed, 2)* pow(math.sin(angle), 2))/ 2*9.8
+def maxalt(v0, angle,):  # função que retorna a altura mxima do lamçamento
+    h = (pow(v0, 2) * pow(math.sin(angle), 2)) / 2*9.8
     return h
